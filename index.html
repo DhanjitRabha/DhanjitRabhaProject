@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Stack Using Linked List</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f4f7;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            text-align: center;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .operations {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .stack-area {
+            min-height: 250px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fafafa;
+        }
+
+        .stack-title {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        #stackDisplay {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .node {
+            width: 180px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid #333;
+            background-color: white;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .arrow {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .top-label {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        #message {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #eee;
+            border-radius: 5px;
+            min-height: 20px;
+        }
+
+        .info {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-left: 4px solid #333;
+        }
+
+        .info p {
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .input-area {
+                flex-direction: column;
+            }
+
+            .operations {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Stack Using Linked List</h1>
+
+        <p class="description">
+            Implementation of Stack Data Structure Using Linked List
+        </p>
+
+        <div class="input-area">
+
+            <input
+                type="text"
+                id="valueInput"
+                placeholder="Enter a value"
+            >
+
+            <button onclick="insertValue()">
+                Insert
+            </button>
+
+        </div>
+
+        <div class="operations">
+
+            <button onclick="popValue()">
+                Delete / Pop
+            </button>
+
+            <button onclick="peekValue()">
+                Peek
+            </button>
+
+            <button onclick="searchValue()">
+                Search
+            </button>
+
+            <button onclick="displayStack()">
+                Display
+            </button>
+
+            <button onclick="clearStack()">
+                Clear
+            </button>
+
+        </div>
+
+        <div class="stack-area">
+
+            <div class="stack-title">
+                Current Stack
+            </div>
+
+            <div id="stackDisplay">
+                Stack is empty
+            </div>
+
+        </div>
+
+        <div id="message">
+            Ready for operation.
+        </div>
+
+        <div class="info">
+
+            <p>
+                <strong>Top:</strong>
+                <span id="topValue">NULL</span>
+            </p>
+
+            <p>
+                <strong>Number of Nodes:</strong>
+                <span id="nodeCount">0</span>
+            </p>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        class Node {
+
+            constructor(data) {
+
+                this.data = data;
+                this.next = null;
+
+            }
+
+        }
+
+
+        class Stack {
+
+            constructor() {
+
+                this.top = null;
+                this.count = 0;
+
+            }
+
+
+            push(data) {
+
+                let newNode = new Node(data);
+
+                if (this.top === null) {
+
+                    this.top = newNode;
+
+                } else {
+
+                    newNode.next = this.top;
+                    this.top = newNode;
+
+                }
+
+                this.count++;
+
+            }
+
+
+            pop() {
+
+                if (this.top === null) {
+
+                    return null;
+
+                }
+
+                let removedNode = this.top;
+
+                this.top = this.top.next;
+
+                this.count--;
+
+                return removedNode.data;
+
+            }
+
+
+            peek() {
+
+                if (this.top === null) {
+
+                    return null;
+
+                }
+
+                return this.top.data;
+
+            }
+
+
+            search(value) {
+
+                let current = this.top;
+
+                while (current !== null) {
+
+                    if (String(current.data) === String(value)) {
+
+                        return true;
+
+                    }
+
+                    current = current.next;
+
+                }
+
+                return false;
+
+            }
+
+
+            display() {
+
+                let values = [];
+
+                let current = this.top;
+
+                while (current !== null) {
+
+                    values[values.length] = current.data;
+
+                    current = current.next;
+
+                }
+
+                return values;
+
+            }
+
+
+            clear() {
+
+                this.top = null;
+                this.count = 0;
+
+            }
+
+
+            isEmpty() {
+
+                return this.top === null;
+
+            }
+
+        }
+
+
+        let stack = new Stack();
+
+
+        function insertValue() {
+
+            let input = document.getElementById("valueInput");
+
+            let value = input.value.trim();
+
+            if (value === "") {
+
+                showMessage("Please enter a value.");
+
+                return;
+
+            }
+
+            stack.push(value);
+
+            showMessage(value + " inserted into the stack.");
+
+            input.value = "";
+
+            updateDisplay();
+
+        }
+
+
+        function popValue() {
+
+            let removedValue = stack.pop();
+
+            if (removedValue === null) {
+
+                showMessage("Stack Underflow: Stack is empty.");
+
+                return;
+
+            }
+
+            showMessage(
+                removedValue + " removed from the stack."
+            );
+
+            updateDisplay();
+
+        }
+
+
+        function peekValue() {
+
+            let topValue = stack.peek();
+
+            if (topValue === null) {
+
+                showMessage("Stack is empty.");
+
+                return;
+
+            }
+
+            showMessage(
+                "Top element is: " + topValue
+            );
+
+        }
+
+
+        function searchValue() {
+
+            let input = document.getElementById("valueInput");
+
+            let value = input.value.trim();
+
+            if (value === "") {
+
+                showMessage("Enter a value to search.");
+
+                return;
+
+            }
+
+            let found = stack.search(value);
+
+            if (found) {
+
+                showMessage(
+                    value + " is present in the stack."
+                );
+
+            } else {
+
+                showMessage(
+                    value + " is not present in the stack."
+                );
+
+            }
+
+        }
+
+
+        function displayStack() {
+
+            updateDisplay();
+
+            showMessage(
+                "Stack displayed successfully."
+            );
+
+        }
+
+
+        function clearStack() {
+
+            stack.clear();
+
+            showMessage(
+                "Stack has been cleared."
+            );
+
+            updateDisplay();
+
+        }
+
+
+        function updateDisplay() {
+
+            let display =
+                document.getElementById("stackDisplay");
+
+            let topValue =
+                document.getElementById("topValue");
+
+            let nodeCount =
+                document.getElementById("nodeCount");
+
+            display.innerHTML = "";
+
+            if (stack.isEmpty()) {
+
+                display.innerHTML =
+                    "Stack is empty";
+
+                topValue.textContent = "NULL";
+
+                nodeCount.textContent = "0";
+
+                return;
+
+            }
+
+            let current = stack.top;
+
+            let firstNode = true;
+
+            while (current !== null) {
+
+                if (firstNode) {
+
+                    let topLabel =
+                        document.createElement("div");
+
+                    topLabel.className =
+                        "top-label";
+
+                    topLabel.textContent =
+                        "TOP";
+
+                    display.appendChild(topLabel);
+
+                    firstNode = false;
+
+                }
+
+                let node =
+                    document.createElement("div");
+
+                node.className = "node";
+
+                node.textContent =
+                    current.data;
+
+                display.appendChild(node);
+
+                if (current.next !== null) {
+
+                    let arrow =
+                        document.createElement("div");
+
+                    arrow.className = "arrow";
+
+                    arrow.textContent = "↓";
+
+                    display.appendChild(arrow);
+
+                }
+
+                current = current.next;
+
+            }
+
+            topValue.textContent =
+                stack.top.data;
+
+            nodeCount.textContent =
+                stack.count;
+
+        }
+
+
+        function showMessage(message) {
+
+            document
+                .getElementById("message")
+                .textContent = message;
+
+        }
+
+
+        updateDisplay();
+
+    </script>
+
+</body>
+
+</html>
